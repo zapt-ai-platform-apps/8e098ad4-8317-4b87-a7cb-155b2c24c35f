@@ -26,9 +26,18 @@ export function useRequestForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Submitting service request:', { description, location, serviceTime, phone, email });
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Request submitted with:', { description, location, serviceTime, phone, email });
+      const response = await fetch('/api/requestService', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description, location, serviceTime, phone, email }),
+      });
+      if (!response.ok) {
+        throw new Error('Request submission failed');
+      }
+      const result = await response.json();
+      console.log('Service request submitted:', result);
       setDescription('');
       setLocation('');
       setServiceTime('');

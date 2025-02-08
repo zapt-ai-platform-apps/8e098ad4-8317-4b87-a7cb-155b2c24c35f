@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS "ratings" (
+  "id" SERIAL PRIMARY KEY,
+  "rating" INTEGER NOT NULL,
+  "comment" TEXT NOT NULL,
+  "created_at" TIMESTAMP DEFAULT NOW()
+);
