@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/browser';
 
 export function useRequestForm() {
   const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState('القاهرة');
   const [serviceTime, setServiceTime] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -39,7 +39,7 @@ export function useRequestForm() {
       const result = await response.json();
       console.log('Service request submitted:', result);
       setDescription('');
-      setLocation('');
+      setLocation('القاهرة');
       setServiceTime('');
       setPhone('');
       setEmail('');

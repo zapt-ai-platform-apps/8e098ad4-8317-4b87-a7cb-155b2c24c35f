@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-
-const initialServices = [
-  { id: 1, title: 'نجارة', category: 'أشغال منزلية', icon: '🪚' },
-  { id: 2, title: 'سباكة', category: 'أشغال منزلية', icon: '🚰' },
-  { id: 3, title: 'كهرباء', category: 'خدمات الصيانة', icon: '💡' },
-  { id: 4, title: 'تنظيف', category: 'خدمات منزلية', icon: '🧹' },
-  { id: 5, title: 'تصميم ديكور', category: 'خدمات تصميم', icon: '🎨' },
-  { id: 6, title: 'حدائق', category: 'خدمات خارجية', icon: '🌳' }
-];
+import useServices from '../../hooks/useServices';
 
 export default function ServiceList() {
+  const { services, loading } = useServices();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('alphabetical');
 
-  const filteredServices = initialServices.filter(service =>
+  const filteredServices = services.filter(service =>
     service.title.includes(searchTerm) || service.category.includes(searchTerm)
   );
 
@@ -44,15 +37,26 @@ export default function ServiceList() {
           <option value="mostPopular">الأكثر شهرة</option>
         </select>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {sortedServices.map(service => (
-          <div key={service.id} className="p-4 border rounded text-center">
-            <div className="text-4xl mb-2">{service.icon}</div>
-            <h3 className="font-semibold">{service.title}</h3>
-            <p className="text-sm text-gray-600">{service.category}</p>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p>جار التحميل...</p>
+      ) : sortedServices.length === 0 ? (
+        <p>لا توجد خدمات تطابق بحثك.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {sortedServices.map(service => (
+            <div key={service.id} className="p-4 border rounded text-center">
+              <div className="text-4xl mb-2">
+                {service.icon ? service.icon : '🔧'}
+              </div>
+              <h3 className="font-semibold">{service.title}</h3>
+              <p className="text-sm text-gray-600">{service.category}</p>
+              {service.description && (
+                <p className="text-xs text-gray-500 mt-1">{service.description}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
